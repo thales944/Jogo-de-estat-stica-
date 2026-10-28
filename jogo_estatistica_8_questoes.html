@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Desafio da Estatística — 8 questões</title>
+<style>
+:root{--bg:#10172a;--panel:#18233b;--panel2:#202f4e;--text:#f4f7ff;--muted:#b9c6df;--accent:#7c9cff;--good:#39d98a;--bad:#ff6b7a}
+*{box-sizing:border-box} body{margin:0;min-height:100vh;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:radial-gradient(circle at top,#263b67 0,#10172a 55%);color:var(--text);display:flex;align-items:center;justify-content:center;padding:20px}
+main{width:min(760px,100%)} .card{background:rgba(24,35,59,.96);border:1px solid #354766;border-radius:22px;padding:clamp(20px,4vw,34px);box-shadow:0 20px 60px #0005}
+h1{margin:0 0 8px;font-size:clamp(1.7rem,4vw,2.4rem)} h2{margin:0 0 14px;font-size:1.25rem}.sub{color:var(--muted);line-height:1.55}.topline{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:.92rem;margin:20px 0 10px}
+.progress{height:8px;background:#0d1425;border-radius:99px;overflow:hidden;margin-bottom:24px}.bar{height:100%;width:0;background:linear-gradient(90deg,#7c9cff,#bd8cff);transition:width .25s}
+.options{display:grid;gap:10px;margin:22px 0}.option{display:block;width:100%;text-align:left;padding:15px 16px;border:1px solid #405273;border-radius:13px;background:var(--panel2);color:var(--text);font:inherit;cursor:pointer;transition:.15s}.option:hover:not(:disabled){border-color:var(--accent);transform:translateY(-1px)}.option:focus-visible,button:focus-visible{outline:3px solid #fff;outline-offset:3px}.option:disabled{cursor:default;opacity:1}.option.correct{border-color:var(--good);background:#123b35}.option.wrong{border-color:var(--bad);background:#482634}
+.feedback{border-radius:12px;padding:14px 16px;line-height:1.5;margin:14px 0;background:#10192b;color:var(--muted)}.feedback.good{border:1px solid #287b5a;color:#d8ffeb}.feedback.bad{border:1px solid #8b3e50;color:#ffe3e7}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}button.primary{border:0;border-radius:12px;background:var(--accent);color:#10172a;font-weight:750;font-size:1rem;padding:13px 20px;cursor:pointer}button.secondary{border:1px solid #506487;border-radius:12px;background:transparent;color:var(--text);font-weight:650;font-size:1rem;padding:12px 18px;cursor:pointer}
+.badge{display:inline-block;background:#2a3b60;color:#dce6ff;border-radius:99px;padding:6px 10px;font-size:.85rem;font-weight:700}.hidden{display:none}.score{font-size:3rem;font-weight:850;letter-spacing:-.04em;margin:10px 0}.small{font-size:.9rem;color:var(--muted)}footer{text-align:center;color:#94a5c7;font-size:.8rem;margin-top:16px}
+</style>
+</head>
+<body>
+<main>
+<section class="card" id="start">
+  <span class="badge">JOGO EDUCATIVO • 8 QUESTÕES</span>
+  <h1>🎯 Desafio da Estatística</h1>
+  <p class="sub">Teste seus conhecimentos sobre Estatística, variação, amplitude e desvio padrão. Cada resposta correta vale <strong>10 pontos</strong>. Você verá uma explicação após responder.</p>
+  <div class="topline"><span>📚 8 perguntas</span><span>🏆 Até 80 pontos</span><span>⏱️ No seu ritmo</span></div>
+  <div class="actions"><button class="primary" id="startBtn">Começar jogo</button></div>
+</section>
+<section class="card hidden" id="quiz" aria-live="polite">
+  <div class="topline"><span id="counter">Questão 1 de 8</span><span id="scoreLabel">Pontuação: 0</span></div>
+  <div class="progress"><div class="bar" id="bar"></div></div>
+  <h2 id="question"></h2>
+  <div class="options" id="options"></div>
+  <div class="feedback hidden" id="feedback" role="status"></div>
+  <div class="actions"><button class="primary hidden" id="nextBtn">Próxima questão</button></div>
+</section>
+<section class="card hidden" id="result">
+  <span class="badge">DESAFIO CONCLUÍDO</span>
+  <h1>🏆 Resultado final</h1>
+  <div class="score" id="finalScore">0/80</div>
+  <h2 id="message"></h2>
+  <p class="sub" id="summary"></p>
+  <div class="actions"><button class="primary" id="restartBtn">Jogar novamente</button></div>
+</section>
+<footer>Desafio da Estatística • Aprender praticando</footer>
+</main>
+<script>
+const questions = [
+ {q:"O que a Estatística ajuda a fazer?",a:["Organizar, analisar e interpretar dados","Somente desenhar gráficos","Descobrir sempre um único resultado exato"],correct:0,why:"A Estatística reúne métodos para coletar, organizar, analisar e interpretar dados."},
+ {q:"As notas de uma turma foram 5, 7, 8 e 10. Qual é a amplitude?",a:["3","5","30"],correct:1,why:"Amplitude = maior valor − menor valor. Portanto, 10 − 5 = 5."},
+ {q:"Qual é a amplitude dos valores 12, 15, 9, 18 e 11?",a:["9","7","18"],correct:0,why:"O maior valor é 18 e o menor é 9. A amplitude é 18 − 9 = 9."},
+ {q:"Dois grupos têm médias iguais, mas um tem valores mais espalhados. O que isso indica?",a:["Que os grupos são idênticos","Que o grupo mais espalhado tem maior dispersão","Que a média foi calculada incorretamente"],correct:1,why:"A dispersão indica o quanto os valores variam em torno de um valor central."},
+ {q:"O que o desvio padrão mede?",a:["A quantidade de dados","A diferença entre o maior e o menor valor apenas","O quanto os valores costumam se afastar da média"],correct:2,why:"O desvio padrão mede a dispersão dos dados em relação à média."},
+ {q:"Se todos os valores de um conjunto forem iguais, qual será o desvio padrão?",a:["Zero","Um","Não pode ser calculado"],correct:0,why:"Quando todos os valores são iguais à média, não há dispersão; o desvio padrão é zero."},
+ {q:"Qual conjunto tem maior amplitude?",a:["2, 4, 5","7, 8, 9","10, 15, 20"],correct:2,why:"As amplitudes são 3, 2 e 10. Logo, o terceiro conjunto tem a maior amplitude."},
+ {q:"As temperaturas de uma semana variaram pouco em torno da média. O que provavelmente acontece com o desvio padrão?",a:["É relativamente pequeno","É necessariamente zero","É sempre maior que a média"],correct:0,why:"Quando os valores ficam próximos da média, a dispersão é pequena e o desvio padrão tende a ser baixo."}
+];
+let index=0, score=0, answered=false, correctCount=0;
+const $=id=>document.getElementById(id);
+function show(id){$(id).classList.remove('hidden')} function hide(id){$(id).classList.add('hidden')}
+function begin(){index=0;score=0;correctCount=0;hide('start');hide('result');show('quiz');renderQuestion()}
+function renderQuestion(){
+ answered=false; const item=questions[index];
+ $('counter').textContent=`Questão ${index+1} de ${questions.length}`;
+ $('scoreLabel').textContent=`Pontuação: ${score}`;
+ $('bar').style.width=`${index/questions.length*100}%`;
+ $('question').textContent=item.q; $('options').innerHTML=''; hide('feedback'); hide('nextBtn');
+ item.a.forEach((answer,i)=>{const b=document.createElement('button');b.className='option';b.textContent=`${String.fromCharCode(65+i)}) ${answer}`;b.addEventListener('click',()=>choose(i));$('options').appendChild(b)});
+}
+function choose(choice){
+ if(answered)return; answered=true; const item=questions[index]; const buttons=[...$('options').querySelectorAll('button')];
+ buttons.forEach((b,i)=>{b.disabled=true;if(i===item.correct)b.classList.add('correct');if(i===choice&&choice!==item.correct)b.classList.add('wrong')});
+ const ok=choice===item.correct;if(ok){score+=10;correctCount++}
+ $('scoreLabel').textContent=`Pontuação: ${score}`;
+ $('feedback').className='feedback '+(ok?'good':'bad');
+ $('feedback').textContent=(ok?'✅ Correto! ':'❌ Não foi dessa vez. ')+item.why;show('feedback');
+ $('nextBtn').textContent=index===questions.length-1?'Ver resultado':'Próxima questão';show('nextBtn');
+}
+function next(){if(!answered)return;index++;if(index<questions.length)renderQuestion();else finish()}
+function finish(){
+ hide('quiz');show('result');$('bar').style.width='100%';$('finalScore').textContent=`${score}/80`;
+ $('message').textContent=score>=70?'Excelente trabalho!':score>=50?'Muito bem! Continue praticando.':'Continue estudando: você vai melhorar!';
+ $('summary').textContent=`Você acertou ${correctCount} de ${questions.length} questões. Cada acerto vale 10 pontos. Revise as explicações e tente novamente para melhorar sua pontuação.`;
+}
+$('startBtn').addEventListener('click',begin);$('nextBtn').addEventListener('click',next);$('restartBtn').addEventListener('click',begin);
+</script>
+</body>
+</html>
